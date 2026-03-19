@@ -1,0 +1,20 @@
+import streamlit as st , pandas as pd , seaborn as sns
+import  matplotlib.pyplot as plt
+st.subheader('Phan tich DL hoc tap')
+sd = pd.read_csv('data5.8.csv')
+df = pd.read_csv('data5.8.csv')
+c1, c2 = st.columns(2)
+c1.write(f'Kich Thuoc:{ df.shape}')
+c2.write(df.describe())
+st.subheader('Phan tich + Loc')
+st.write('Phan bo theo thanh pho')
+st.bar_chart(df['Dia chi'].value_counts())
+tp = st.selectbox('chon thanh pho:',df['Dia chi'].unique())
+st.dataframe(df[df['Dia chi'] == tp])
+st.subheader('Phan tich chan doan')
+fig ,ax = plt.subplots()
+sns.regplot(data=df ,x='So gio hoc', y='Diem so', ax=ax)
+st.pyplot(fig)
+st.bar_chart(df.groupby('Dia chi')['Diem so'].mean())
+cham_chi = df[df['So gio hoc'] > 55]
+st.metric('diem TB nhom cham (>55h):', round(cham_chi['Diem so']).mean(),2)
